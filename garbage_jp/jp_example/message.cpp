@@ -2,5 +2,5 @@
 
 message::message()
 {
-
+    int field;
 }
