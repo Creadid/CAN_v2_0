@@ -1,5 +1,5 @@
-#ifndef MESSAGE_DATA_REQUEST_H
-#define MESSAGE_DATA_REQUEST_H
+#ifndef MESSAGE_DATA_OR_REQUEST_H
+#define MESSAGE_DATA_OR_REQUEST_H
 
 struct m_Arbitration_Field
 {
@@ -27,10 +27,12 @@ struct m_ACK_Field
 };
 
 // Message Class, 7 Fields with a Total o 32 bits + 0-8 bytes (4-12 bytes)
-class message_DATA_REQUEST
+class message_DATA_OR_REQUEST
 {
 public:
-    message_DATA_REQUEST();
+    message_DATA_OR_REQUEST();                             // Default  Constructor
+    message_DATA_OR_REQUEST(x1, x2, x3, x4, x5, x6, x7);   // Full     Constructor
+    message_DATA_OR_REQUEST(x1, x2, x3, x4, x5);           // Partial  Constructor without Start and End of Frame
 
 private:
     int    m_Start_Of_Frame    ; // Dominant                                (1 bit)
@@ -41,4 +43,4 @@ private:
     struct m_ACK_Field         ; // ACK Slot + ACK Delimiter                (1 + 1 bits)
     int    m_End_Of_Frame      ; // Recessive                               (7 bits)
 };
-#endif // MESSAGE_DATA_REQUEST_H
+#endif // MESSAGE_DATA_OR_REQUEST_H
