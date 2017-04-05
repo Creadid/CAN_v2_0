@@ -4,7 +4,10 @@ QT += qml quick
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    message_DATA_OR_REQUEST.cpp
+    message_DATA_OR_REQUEST.cpp \
+    can.cpp \
+    node.cpp \
+    bus.cpp
 
 #RESOURCES += qml.qrc
 
@@ -31,4 +34,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    message_DATA_OR_REQUEST.h
+    message_DATA_OR_REQUEST.h \
+    can.h \
+    node.h \
+    bus.h

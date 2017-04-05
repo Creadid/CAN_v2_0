@@ -1,14 +1,17 @@
-//#include <QGuiApplication>
-//#include <QQmlApplicationEngine>
 #include<iostream>
-int main( void ) //int argc, char *argv[])
+
+int main( void )
 {
 
-    std::cout << "ḧello world" << std::endl ;
-    //QGuiApplication app(argc, argv);
+while(true)
+{
+    // BUS Tick
+        // See if new nodes and add
+        // Decide Arbitration
+        // Send Messages
+    // Nodes Tick
 
-    //QQmlApplicationEngine engine;
-    //engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+}
 
-    //return app.exec();
+return true;
 }
