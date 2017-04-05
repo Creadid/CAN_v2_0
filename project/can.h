@@ -1,22 +1,22 @@
-#ifndef CAN_H
-#define CAN_H
+#ifndef c_CAN_H
+#define c_CAN_H
 
 
-class CAN
+class c_CAN
 {
 public:
     // Constructors and Destructors
-    CAN();
-    ~CAN(){}
+    c_CAN();
+    ~c_CAN(){}
     // Definitions
-    enum POLARITY { DOMINANT, RECESSIVE };
-    const float NOMINAL_BIT_RATE = 10^6;                                 // [bit/s] [bit*H] -> 1Mbit/s
-    const float NOMINAL_BIT_TIME = 1/NOMINAL_BIT_RATE;                   // [s/bit]
-    const float NETWORK_LENGTH   = 100;                                  // [m]
-    const float NETWORK_SPEED    = 3*10^8                                // [m/s]Light Speed
-    const float SIGNAL_PROPRAGATION_TIME = NETWORK_LENGTH/NETWORK_SPEED; // [s]        -> 3.(3)*10^-7 Seconds
-    const float OSCILLATIONS_RATE       = 1024                           // [oscillations/bit]
-    const float MINIMUM_TIME_QUANTUM = NOMINAL_BIT_TIME / OSCILLATIONS_RATE // [s/oscillation]
+    enum  e_POLARITY { DOMINANT, RECESSIVE };
+    const float p_NOMINAL_BIT_RATE         = 10^6                                     ; // [bit/s] [bit*H] -> 1Mbit/s
+    const float p_NOMINAL_BIT_TIME         = 1/p_NOMINAL_BIT_RATE                     ; // [s/bit]
+    const float p_NETWORK_LENGTH           = 100                                      ; // [m]
+    const float p_NETWORK_SPEED            = 3*10^8                                   ; // [m/s]Light Speed
+    const float p_SIGNAL_PROPRAGATION_TIME = p_NETWORK_LENGTH/p_NETWORK_SPEED         ; // [s] -> 3.(3)*10^-7 Seconds
+    const float p_OSCILLATIONS_RATE        = 1024                                     ; // [oscillations/bit]
+    const float p_MINIMUM_TIME_QUANTUM     = p_NOMINAL_BIT_TIME / p_OSCILLATIONS_RATE ; // [s/oscillation]
 };
 
-#endif // CAN_H
+#endif // c_CAN_H

@@ -1,6 +1,6 @@
 #include "can.h"
 
-CAN::CAN()
+c_CAN::c_CAN()
 {
 
 }
