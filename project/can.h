@@ -9,7 +9,10 @@ public:
     c_CAN();
     ~c_CAN(){}
     // Definitions
+    //// Others
     enum  e_POLARITY { DOMINANT, RECESSIVE };
+    const int   p_MAX_NODES                = 40                                       ;
+    //// Times/Oscillations
     const float p_NOMINAL_BIT_RATE         = 10^6                                     ; // [bit/s] [bit*H] -> 1Mbit/s
     const float p_NOMINAL_BIT_TIME         = 1/p_NOMINAL_BIT_RATE                     ; // [s/bit]
     const float p_NETWORK_LENGTH           = 100                                      ; // [m]

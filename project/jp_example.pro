@@ -37,4 +37,8 @@ HEADERS += \
     message_DATA_OR_REQUEST.h \
     can.h \
     node.h \
-    bus.h
+    bus.h \
+    main.h
+
+DISTFILES += \
+    protocol_buffer/proto_message_definitions.proto
