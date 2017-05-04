@@ -63,7 +63,17 @@ int main( void )
             {
                 case 1:
                     std::cout << "You have selected 1" << std::endl ;
-                    g_BUS.f_Add_Node();
+                    std::cout << "Please insert the node name (if nothing then press +):" << std::endl ;
+                    std::cin >> user_input ;
+                    switch ( user_input == "+" )
+                    {
+                        case true:
+                            g_BUS.f_Add_Node( "Unamed" );
+                            break;
+                        default:
+                            g_BUS.f_Add_Node( user_input );
+                            break;
+                    }
                     break;
                 case 2:
                     std::cout << "You have selected 2" << std::endl ;

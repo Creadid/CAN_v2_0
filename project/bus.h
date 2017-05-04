@@ -9,6 +9,7 @@
 // C++ Includes
 #include <vector>
 #include <mutex>
+#include <string>
 
 // C Includes
 
@@ -31,11 +32,11 @@ private:
     //// # Nodes
     int  m_Number_Of_Nodes;
     //// Others
-    bool m_Current_Bit              ;
-    bool m_BUS_Initialized  = false ;
-    bool m_Exit_Condition   = false ;
-    int  m_New_Node_Request = 0     ;
-    std::mutex s_nodes_mutex ;
+                           bool m_Current_Bit              ;
+                           bool m_BUS_Initialized  = false ;
+                           bool m_Exit_Condition   = false ;
+    std::vector < std::string > m_New_Node_Name            ;
+    std::mutex                  s_Nodes_Mutex              ;
 
     // Member Functions
     void f_Check_Nodes_Heatbeats ( void );
@@ -55,10 +56,9 @@ public:
     void Exit ( void );
 
     // Other Member Functions
-    void f_Init_Socket             ( void ) const ;
-    void f_Create_New_Node         ( void ) ;
-    void f_Create_New_Nodes_Thread ( void ) ;
-    void f_Add_Node                ( void ) { m_New_Node_Request++; }
+    void f_Init_Socket             ( void             ) const ;
+    void f_Create_New_Nodes_Thread ( void             )       ;
+    void f_Add_Node                ( std::string name ) { m_New_Node_Name.push_back( name ) ; }
 
     // Setters and Getters
     bool f_Get_BUS_Initialized( void  ) const { return m_BUS_Initialized ;}

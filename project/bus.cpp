@@ -28,6 +28,8 @@ void c_BUS::Tick( void )
     c_BUS::f_Receive_Bit  ();
 
     std::cout << "#nodes:" <<  (int)c_BUS::m_Nodes_Adress.size() <<std::endl;
+
+    sleep(1);
 }
 
 void c_BUS::Exit ( void )
@@ -39,11 +41,8 @@ void c_BUS::Exit ( void )
 void c_BUS::f_Update_Nodes( void )
 {
     // If there are still new Node request, create the node
-    if (c_BUS::m_New_Node_Request > 0 )
+    if (c_BUS::m_New_Node_Name.size() > 0 )
     {
-        // Clean the request
-        c_BUS::m_New_Node_Request--;
-
         // Create a thread to handle the new node and detach it (it is necessary to detach, DON'T KNOW YET WHY :/ )
         std::thread Node_thread_id( &c_BUS::f_Create_New_Nodes_Thread, this );
         Node_thread_id.detach();
@@ -108,21 +107,26 @@ void c_BUS::f_Create_New_Nodes_Thread( void )
 
     std::cout << "I'll try to create a node" << std::endl;
 
-    // Create new node
-    c_node * new_node_adress = new c_node;
+    // Create new node with the given name
+    c_node * new_node_adress = new c_node( this->m_New_Node_Name.at( 0 ) ); // name of the Node is at the first positon
 
     // Lock Thread to prevent for multi-node creation
-    s_nodes_mutex.lock();
+    s_Nodes_Mutex.lock();
 
     // Add new node to the list
     c_BUS::m_Nodes_Adress.push_back( new_node_adress );
 
-    //sleep(5);
+    // Clean the request
+    c_BUS::m_New_Node_Name.erase( m_New_Node_Name.begin() ); // remove the node as it is in the first position
 
     // Unlock Thread
-    s_nodes_mutex.unlock();
+    s_Nodes_Mutex.unlock();
 
     std::cout << "I was able to create a node" << std::endl;
+
+
+    // Tick the node
+    new_node_adress->Tick();
 }
 
 //void b (void)
