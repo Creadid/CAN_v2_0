@@ -34,8 +34,51 @@ bool Wait_For_BUS_Initialization( void )
     return true;
 }
 
+void Set_Priority_With_Errors( int niceness )
+{
+
+    if ( setpriority( PRIO_PROCESS, 0 , niceness ) == -1 ) // Needs sudo requests
+    {
+        switch errno
+        {
+            case EACCES:
+                std::cout <<
+                "The priority is being changed to a lower value\
+                and the current process does not have the appropriate privilege."
+                << std::endl;
+                break;
+            case EINVAL:
+                std::cout <<
+                "The symbol specified in the which argument was not recognized,\
+                or the value of the who argument is not a valid process ID, process group ID or user ID."
+                << std::endl;
+                break;
+            case ENOSYS:
+                std::cout <<
+                "The system does not support this function."
+                << std::endl;
+                break;
+            case EPERM:
+                std::cout <<
+                "A process was located, but neither the real nor effective user ID of the executing process\
+                match the effective user ID of the process whose priority is to be changed."
+                << std::endl;
+                break;
+            case ESRCH:
+                std::cout <<
+                "No process could be located using the which and who argument values specified."
+                << std::endl;
+                break;
+        }
+        exit(0);
+    }
+}
+
 int main( void )
 {
+    // Set the priorities of this process
+   // Set_Priority_With_Errors( -20 );
+
     // Create BUS thread and execute it
     std::thread BUS_thread_id ( &execute_BUS_Thread );
 
@@ -62,26 +105,27 @@ int main( void )
             switch (input)
             {
                 case 1:
+                    // Talk with user
                     std::cout << "You have selected 1" << std::endl ;
                     std::cout << "Please insert the node name (if nothing then press +):" << std::endl ;
                     std::cin >> user_input ;
-                    switch ( user_input == "+" )
-                    {
-                        case true:
-                            g_BUS.f_Add_Node( "Unamed" );
-                            break;
-                        default:
-                            g_BUS.f_Add_Node( user_input );
-                            break;
-                    }
+                    // Use the input
+                    if ( user_input == "+" ) { g_BUS.f_Add_Node( "Unamed"   ) ;}
+                    else                     { g_BUS.f_Add_Node( user_input ) ;}
+                    //
                     break;
                 case 2:
+                    // Talk with user
                     std::cout << "You have selected 2" << std::endl ;
+                    // Use the input
                     g_BUS.f_Set_Exit_Condition();
                     ask_for_inputs = false;
+                    //
                     break;
                 default:
+                    // Talk with User
                     std::cout << "This is not a valid input" << std::endl ;
+                    //
                     break;
             }
             std::cout << "\n\n\n" << std::endl ;

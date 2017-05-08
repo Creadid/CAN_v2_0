@@ -2,18 +2,22 @@
 #define c_BUS_H
 
 // My Includes
-#include "can.h"
 #include "node.h"
-#include "main.h"
+#include "can.h"
 
 // C++ Includes
 #include <vector>
 #include <mutex>
 #include <string>
+#include <thread>
+#include <iostream>
 
 // C Includes
+#include <unistd.h>
+#include <sys/un.h>
+#include <sys/socket.h>
 
-class c_BUS : public c_CAN
+class c_BUS
 {
 private:
     // Definitions
@@ -27,8 +31,8 @@ private:
     int m_Bits_PHASE_SEG2  ;
     //// # Time
     float m_Time_INFO_PROC = 2*m_Time_QUANTUM                    ;
-    float m_Time_PROP_SEG  = 2*c_CAN::p_SIGNAL_PROPRAGATION_TIME ; // TO-DO: add input comparator and output driver delays
-    float m_Time_QUANTUM   = 8*c_CAN::p_MINIMUM_TIME_QUANTUM     ;
+    float m_Time_PROP_SEG  = 2*n_CAN::p_SIGNAL_PROPRAGATION_TIME ; // TO-DO: add input comparator and output driver delays
+    float m_Time_QUANTUM   = 8*n_CAN::p_MINIMUM_TIME_QUANTUM     ;
     //// # Nodes
     int  m_Number_Of_Nodes;
     //// Others
@@ -36,7 +40,7 @@ private:
                            bool m_BUS_Initialized  = false ;
                            bool m_Exit_Condition   = false ;
     std::vector < std::string > m_New_Node_Name            ;
-    std::mutex                  s_Nodes_Mutex              ;
+    std::mutex                  m_Nodes_Mutex              ;
 
     // Member Functions
     void f_Check_Nodes_Heatbeats ( void );

@@ -3,21 +3,19 @@
 
 // C includes
 #include <unistd.h>
+#include <sys/resource.h>
 
 // C++ includes
-#include <iostream>
-#include <vector>
 #include <thread>
+#include <iostream>
 
 // My includes
-#include "message_DATA_OR_REQUEST.h"
 #include "bus.h"
-#include "can.h"
-#include "node.h"
 
 // Functions Declarations
 void execute_BUS_Thread ( void );
 bool Wait_For_BUS_Initialization( void ) ;
+void Set_Priority_With_Errors( int );
 int  main( void );
 
 #endif // MAIN_H

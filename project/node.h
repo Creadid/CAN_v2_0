@@ -5,14 +5,12 @@
 #include <message_DATA_OR_REQUEST.h>
 
 // C++ Includes
-#include <vector>
-#include <mutex>
 #include <string>
 #include <iostream>
+#include <chrono>
+#include <vector>
 
 // C Includes
-#include <unistd.h>
-
 
 enum e_STATE             { idle, receiving, transmitting, error };
 enum e_FAULT_CONFINEMENT { error_active, error_passive, bus_off }; // page 61
@@ -24,11 +22,10 @@ public:
 
     // Constructors and Destructors
     c_node();
-    c_node( std::string name_input );
+    c_node( std::string );
     ~c_node(){}
 
     // Member Functions
-    virtual void f_message_send(){}
     virtual void f_message_receive(){}
     virtual void f_message_request(){}
     virtual void f_sincronyze(){}
@@ -36,6 +33,8 @@ public:
 
     // Member Functions
     bool f_Get_Node_Bit( void );
+    void f_Message_Send_to_BUS( void );
+    bool f_Message_Send_to_Buffer( c_message_DATA_OR_REQUEST const & message );
 
     // Main Functions
     bool Tick( void );
@@ -47,9 +46,17 @@ private:
     int  m_Error_Count_Transmit ; // page 61
     int  m_Error_Count_Receive  ; // page 61
     bool m_Current_Bit          ;
+    c_message_DATA_OR_REQUEST   m_Message;
 
     // My variables
-    std::string m_Node_Name     ;   // Name of the Node
+    std::string m_Node_Name     ;   // Name of the
+    bool m_Message_Send_Thread_Working = false;
+    std::vector< c_message_DATA_OR_REQUEST > m_Message_Buffer;
+
+    // Clock Variables
+    std::chrono::steady_clock                                                                    m_Clock     ; // Precise Clock
+    std::chrono::time_point< std::chrono::steady_clock, std::chrono::duration<long,std::nano>  > m_Time_Start; // Init of time
+    std::chrono::duration< long , std::nano>                                                     m_Time_Delta; // End of time - Init of time
 
 };
 

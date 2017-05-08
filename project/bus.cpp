@@ -1,12 +1,4 @@
 #include "bus.h"
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <unistd.h>
-#include <string.h>
-#include <iostream>
-
-#include <thread>
 
 // Default Constructor
 c_BUS::c_BUS()
@@ -27,9 +19,10 @@ void c_BUS::Tick( void )
     c_BUS::f_Update_Nodes ();    
     c_BUS::f_Receive_Bit  ();
 
-    std::cout << "#nodes:" <<  (int)c_BUS::m_Nodes_Adress.size() <<std::endl;
+   // std::cout << "#nodes:" <<  (int)c_BUS::m_Nodes_Adress.size() <<std::endl;
 
     sleep(1);
+
 }
 
 void c_BUS::Exit ( void )
@@ -49,29 +42,22 @@ void c_BUS::f_Update_Nodes( void )
     }
 
     // Check for Nodes heartbeat
-    c_BUS::f_Check_Nodes_Heatbeats();
-}
-
-
-// Check the number of nodes that are alive
-void c_BUS::f_Check_Nodes_Heatbeats ( void )
-{
-    // TO-DO
+    //c_BUS::f_Check_Nodes_Heatbeats();
 }
 
 // Receive the bits
 void c_BUS::f_Receive_Bit ( void )
 {
-    bool received_bit = c_CAN::RECESSIVE;
-    bool node_bit     = c_CAN::RECESSIVE;
+    bool received_bit = n_CAN::RECESSIVE;
+    bool node_bit     = n_CAN::RECESSIVE;
 
     // receive the bit of each note and see if it detects a dominant bit
     for (int i = 0 ; i < (int)c_BUS::m_Nodes_Adress.size() ; i++)
     {
         node_bit = m_Nodes_Adress[i]->c_node::f_Get_Node_Bit();
-        if ( node_bit == c_CAN::DOMINANT )
+        if ( node_bit == n_CAN::DOMINANT )
         {
-            received_bit = c_CAN::DOMINANT ;
+            received_bit = n_CAN::DOMINANT ;
             break;
         }
     }
@@ -98,7 +84,7 @@ void c_BUS::f_Init_Socket (void ) const
     bind(socket_server_fd, (const sockaddr * ) &struct_socket_adress, sizeof(struct_socket_adress));
 
     // Listening - Making the socket as a passive socket that will receive message of #clients - NON BLOCKING
-    listen( socket_server_fd, c_CAN::p_MAX_NODES ); // Set 40 maximum nodes
+    listen( socket_server_fd, n_CAN::p_MAX_NODES ); // Set 40 maximum nodes
 }
 
 
@@ -108,24 +94,23 @@ void c_BUS::f_Create_New_Nodes_Thread( void )
     std::cout << "I'll try to create a node" << std::endl;
 
     // Create new node with the given name
-    c_node * new_node_adress = new c_node( this->m_New_Node_Name.at( 0 ) ); // name of the Node is at the first positon
+    c_node * new_node_adress = new c_node( c_BUS::m_New_Node_Name.at( 0 ) ); // name of the Node is at the first positon
 
     // Lock Thread to prevent for multi-node creation
-    s_Nodes_Mutex.lock();
+    c_BUS::m_Nodes_Mutex.lock();
 
     // Add new node to the list
     c_BUS::m_Nodes_Adress.push_back( new_node_adress );
 
     // Clean the request
-    c_BUS::m_New_Node_Name.erase( m_New_Node_Name.begin() ); // remove the node as it is in the first position
+    c_BUS::m_New_Node_Name.erase( c_BUS::m_New_Node_Name.begin() ); // remove the node as it is in the first position
 
     // Unlock Thread
-    s_Nodes_Mutex.unlock();
+    c_BUS::m_Nodes_Mutex.unlock();
 
     std::cout << "I was able to create a node" << std::endl;
 
-
-    // Tick the node
+    // Start the node execution by ticking it
     new_node_adress->Tick();
 }
 

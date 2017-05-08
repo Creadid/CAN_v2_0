@@ -50,14 +50,14 @@ OBJECTS_DIR   = ./
 
 SOURCES       = main.cpp \
 		message_DATA_OR_REQUEST.cpp \
-		can.cpp \
+		bus.cpp \
 		node.cpp \
-		bus.cpp 
+		can.cpp 
 OBJECTS       = main.o \
 		message_DATA_OR_REQUEST.o \
-		can.o \
+		bus.o \
 		node.o \
-		bus.o
+		can.o
 DIST          = protocol_buffer/proto_message_definitions.proto \
 		../../Qt/5.8/gcc_64/mkspecs/features/spec_pre.prf \
 		../../Qt/5.8/gcc_64/mkspecs/common/unix.conf \
@@ -234,9 +234,9 @@ DIST          = protocol_buffer/proto_message_definitions.proto \
 		bus.h \
 		main.h main.cpp \
 		message_DATA_OR_REQUEST.cpp \
-		can.cpp \
+		bus.cpp \
 		node.cpp \
-		bus.cpp
+		can.cpp
 QMAKE_TARGET  = jp_example
 DESTDIR       = 
 TARGET        = jp_example
@@ -615,7 +615,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../Qt/5.8/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents message_DATA_OR_REQUEST.h can.h node.h bus.h main.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp message_DATA_OR_REQUEST.cpp can.cpp node.cpp bus.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp message_DATA_OR_REQUEST.cpp bus.cpp node.cpp can.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -672,20 +672,20 @@ message_DATA_OR_REQUEST.o: message_DATA_OR_REQUEST.cpp message_DATA_OR_REQUEST.h
 		can.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o message_DATA_OR_REQUEST.o message_DATA_OR_REQUEST.cpp
 
-can.o: can.cpp can.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o can.o can.cpp
-
-node.o: node.cpp node.h \
-		message_DATA_OR_REQUEST.h \
-		can.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o node.o node.cpp
-
 bus.o: bus.cpp bus.h \
 		can.h \
 		node.h \
 		message_DATA_OR_REQUEST.h \
 		main.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o bus.o bus.cpp
+
+node.o: node.cpp node.h \
+		message_DATA_OR_REQUEST.h \
+		can.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o node.o node.cpp
+
+can.o: can.cpp can.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o can.o can.cpp
 
 ####### Install
 
